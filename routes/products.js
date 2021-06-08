@@ -44,6 +44,8 @@ router.post("/", [auth], async (req, res) => {
 
 router.put("/:id", [auth], async (req, res) => {
   console.log("inside put product");
+  req.body.IsDeleted = false;
+  req.body.liked = false;
   const { error } = validate(req.body);
   console.log("error: " + error);
   if (error) return res.status(400).send(error.details[0].message);

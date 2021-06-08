@@ -11,7 +11,10 @@ router.get("/me", auth, async (req, res) => {
 });
 
 router.post("/", async (req, res) => {
+  console.log("inside post user");
+  console.log(JSON.stringify(req.body));
   const { error } = validate(req.body);
+  console.log(JSON.stringify(error));
   if (error) return res.status(400).send(error.details[0].message);
 
   let user = await User.findOne({ email: req.body.email });
@@ -25,6 +28,7 @@ router.post("/", async (req, res) => {
   const token = user.generateAuthToken();
   res
     .header("x-auth-token", token)
+    .header("access-control-expose-headers", "x-auth-token")
     .send(_.pick(user, ["_id", "name", "email"]));
 });
 
